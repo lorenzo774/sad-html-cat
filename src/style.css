@@ -7,6 +7,10 @@ body {
   background-color: black;
 }
 
+* {
+  font-family: "Mochiy Pop One", sans-serif;
+}
+
 #app {
   width: 100vw;
   height: 100vh;
@@ -17,4 +21,13 @@ body {
 
 #game {
   background: cyan;
+}
+
+#fps-counter {
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 3rem;
+  font-size: 2rem;
 }

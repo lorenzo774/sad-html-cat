@@ -4,6 +4,7 @@ import { Input } from "../game/input";
 import { Key } from "../game/key";
 import { Settings } from "../game/settings";
 import { Vector2 } from "../game/vector";
+import { loadImage } from "../utils/helper";
 
 export class Player extends AnimatedSprite {
   private speed: number = 8;
@@ -26,37 +27,47 @@ export class Player extends AnimatedSprite {
   }
 
   private createAnimations(): Animation[] {
-    const idleImg = new Image(
+    const idleImg = loadImage(
+      "../../assets/sprites_mario000.png",
       this.playerSize.x,
       this.playerSize.y
     );
-    idleImg.src = "../../assets/sprites_mario000.png";
-    const idle = new Animation("idle", [idleImg], 1, 10);
 
-    const runningImgs = [
-      idleImg,
-      new Image(this.playerSize.x, this.playerSize.y),
-    ];
-    runningImgs[1].src =
-      "../../assets/sprites_mario001.png";
+    const idle = new Animation(
+      "idle",
+      [idleImg as HTMLImageElement],
+      1,
+      10
+    );
+
     const run = new Animation(
       "run",
-      runningImgs,
+      [
+        idleImg,
+        loadImage(
+          "../../assets/sprites_mario001.png",
+          this.playerSize.x,
+          this.playerSize.y
+        ),
+      ] as HTMLImageElement[],
       2,
       5,
       true
     );
-    const jumpImgs = [
-      new Image(this.playerSize.x, this.playerSize.y),
-      new Image(this.playerSize.x, this.playerSize.y),
-    ];
-
-    jumpImgs[0].src = "../../assets/sprites_mario002.png";
-    jumpImgs[1].src = "../../assets/sprites_mario003.png";
-
     const jump = new Animation(
       "jump",
-      jumpImgs,
+      [
+        loadImage(
+          "../../assets/sprites_mario002.png",
+          this.playerSize.x,
+          this.playerSize.y
+        ),
+        loadImage(
+          "../../assets/sprites_mario003.png",
+          this.playerSize.x,
+          this.playerSize.y
+        ),
+      ] as HTMLImageElement[],
       2,
       40,
       false
