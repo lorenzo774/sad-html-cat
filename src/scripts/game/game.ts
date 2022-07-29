@@ -8,11 +8,28 @@ export class Game {
   ) {}
 
   update() {
-    this.sprites.forEach((sprite) => sprite.update());
+    this.sprites.forEach((sprite) => {
+      sprite.update();
+      this.sprites.forEach((other) => {
+        // Check every collision, not the one of the player
+        if (
+          JSON.stringify(other) !==
+            JSON.stringify(sprite) &&
+          other.collider
+        )
+          sprite.collide(other);
+      });
+    });
   }
 
   clear() {
     this.context.beginPath();
+  }
+
+  drawDebug() {
+    this.sprites.forEach((sprite) =>
+      sprite.drawDebug(this.context)
+    );
   }
 
   draw() {

@@ -19,11 +19,13 @@ Settings.instance.CANVAS_HEIGHT = canvas.height;
 
 // GameObjects
 const player = new Player();
+const player2 = new Player(false);
+player2.pos.x += 300;
 
 // Input system
 Input.listen();
 
 // Launch
-const game = new Game(context, [player]);
+const game = new Game(context, [player, player2]);
 const launcher = new Launcher(game);
 launcher.run();

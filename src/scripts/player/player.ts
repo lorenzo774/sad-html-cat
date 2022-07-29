@@ -1,5 +1,6 @@
 import { AnimatedSprite } from "../game/animatedsprite";
 import { Animation } from "../game/animation";
+import { CollisionBox } from "../game/collisionbox";
 import { Input } from "../game/input";
 import { Key } from "../game/key";
 import { Settings } from "../game/settings";
@@ -10,11 +11,11 @@ import { loadImage } from "../utils/helper";
 export class Player extends AnimatedSprite {
   private speed: number = 6;
   private jumpSpeed: number = 14;
-  private velocity: Vector2 = Vector2.ZERO;
   private canJump: boolean = true;
   private playerSize: Vector2;
+  public _enabled: boolean = true;
 
-  constructor() {
+  constructor(enabled: boolean = true) {
     const playerSize: Vector2 = new Vector2(100, 130);
     const playerPos = new Vector2(
       Settings.instance.CANVAS_WIDTH / 2 - playerSize.x / 2,
@@ -24,9 +25,17 @@ export class Player extends AnimatedSprite {
     super(playerPos, []);
     this.playerSize = playerSize;
     this.animations = this.createAnimations();
+    this.collider = new CollisionBox(
+      70,
+      100,
+      new Vector2(24, 30)
+    );
     this.play("idle");
+    this._enabled = enabled;
+    console.log(this._enabled);
   }
 
+  // TODO: Create helper method to create animations
   private createAnimations(): Animation[] {
     const idleImg = loadImage(
       "../../assets/sprites_mario000.png",
@@ -76,21 +85,22 @@ export class Player extends AnimatedSprite {
     return [idle, run, jump];
   }
 
-  private inBounds(): boolean {
+  private onTerrain(): boolean {
     return (
-      this.pos.y + this.img.height + this.velocity.y <
-      Settings.instance.CANVAS_HEIGHT
+      this.pos.y + this.img.height + this.velocity.y >=
+        Settings.instance.CANVAS_HEIGHT || this.isOnTerrain
     );
   }
 
   private fallingHandler() {
-    if (this.inBounds()) {
-      this.velocity.y +=
-        Settings.instance.GRAVITY * Time.deltaTime * 100;
-    } else {
+    if (this.onTerrain()) {
+      console.log("ONTERRAIN");
       this.velocity.y = 0;
       if (!this.canJump) this.play("idle");
       this.canJump = true;
+    } else {
+      this.velocity.y +=
+        Settings.instance.GRAVITY * Time.deltaTime * 100;
     }
   }
 
@@ -102,19 +112,20 @@ export class Player extends AnimatedSprite {
 
   update() {
     super.update();
-
     this.velocity.x = 0;
 
-    if (Input.isPressed(Key.A)) {
-      this.velocity.x = -this.speed;
-      this.flip = true;
+    if (this._enabled) {
+      if (Input.isPressed(Key.A)) {
+        this.velocity.x = -this.speed;
+        this.flip = true;
+      }
+      if (Input.isPressed(Key.D)) {
+        this.velocity.x = this.speed;
+        this.flip = false;
+      }
+      if (Input.justPressed(Key.SPACE) && this.canJump)
+        this.jump();
     }
-    if (Input.isPressed(Key.D)) {
-      this.velocity.x = this.speed;
-      this.flip = false;
-    }
-    if (Input.justPressed(Key.SPACE) && this.canJump)
-      this.jump();
 
     // Run animations
     if (
@@ -129,7 +140,7 @@ export class Player extends AnimatedSprite {
     // Create gravity
     this.fallingHandler();
 
-    this.pos.x += this.velocity.x * Time.deltaTime * 100;
-    this.pos.y += this.velocity.y * Time.deltaTime * 100;
+    // Sprite method
+    this.updatePos();
   }
 }

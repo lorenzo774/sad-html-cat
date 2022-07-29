@@ -19,7 +19,6 @@ export class AnimatedSprite extends Sprite {
     this._animations = animations;
     this._animationsData = this._animations.map(
       (animation) => {
-        console.log(Time.deltaTime);
         return {
           timeLastFrame:
             animation.timeLastFrame * Time.deltaTime,
@@ -111,5 +110,6 @@ export class AnimatedSprite extends Sprite {
     }
     if (!this.curAnimationData) return;
     this.curAnimationData.timeLastFrame -= Time.deltaTime;
+    super.update();
   }
 }

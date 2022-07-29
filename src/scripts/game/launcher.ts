@@ -27,6 +27,8 @@ export class Launcher {
     this.game.update();
     this.game.clear();
     this.game.draw();
+    // Draw collisionbox on debug mode
+    if (Settings.instance.DEBUG_MODE) this.game.drawDebug();
 
     const fps = 1 / (this.dif / 1000);
 

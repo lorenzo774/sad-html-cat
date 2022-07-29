@@ -12,5 +12,6 @@ export class Settings {
   CANVAS_WIDTH: number = 0;
   CANVAS_HEIGHT: number = 0;
   GRAVITY: number = 0.3;
-  FPS: number = 60;
+  FPS: number = 144;
+  DEBUG_MODE: boolean = true;
 }
