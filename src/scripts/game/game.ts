@@ -11,6 +11,10 @@ export class Game {
     this.sprites.forEach((sprite) => sprite.update());
   }
 
+  clear() {
+    this.context.beginPath();
+  }
+
   draw() {
     this.context.clearRect(
       0,

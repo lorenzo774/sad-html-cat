@@ -1,5 +1,6 @@
 import { Animation } from "./animation";
 import { Sprite } from "./sprite";
+import { Time } from "./time";
 import { Vector2 } from "./vector";
 
 interface AnimationData {
@@ -18,8 +19,10 @@ export class AnimatedSprite extends Sprite {
     this._animations = animations;
     this._animationsData = this._animations.map(
       (animation) => {
+        console.log(Time.deltaTime);
         return {
-          timeLastFrame: animation.timeLastFrame,
+          timeLastFrame:
+            animation.timeLastFrame * Time.deltaTime,
           animation,
         };
       }
@@ -33,14 +36,6 @@ export class AnimatedSprite extends Sprite {
     this._animations = animations;
     this.maxFramesCounter = animations[0].frames;
     // Set animations data
-    this._animationsData = this._animations.map(
-      (animation) => {
-        return {
-          timeLastFrame: animation.timeLastFrame,
-          animation,
-        };
-      }
-    );
   }
 
   private getAnimation(
@@ -115,6 +110,6 @@ export class AnimatedSprite extends Sprite {
         ];
     }
     if (!this.curAnimationData) return;
-    this.curAnimationData.timeLastFrame--;
+    this.curAnimationData.timeLastFrame -= Time.deltaTime;
   }
 }

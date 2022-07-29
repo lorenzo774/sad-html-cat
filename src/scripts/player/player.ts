@@ -3,12 +3,13 @@ import { Animation } from "../game/animation";
 import { Input } from "../game/input";
 import { Key } from "../game/key";
 import { Settings } from "../game/settings";
+import { Time } from "../game/time";
 import { Vector2 } from "../game/vector";
 import { loadImage } from "../utils/helper";
 
 export class Player extends AnimatedSprite {
-  private speed: number = 8;
-  private jumpSpeed: number = 13;
+  private speed: number = 6;
+  private jumpSpeed: number = 14;
   private velocity: Vector2 = Vector2.ZERO;
   private canJump: boolean = true;
   private playerSize: Vector2;
@@ -37,7 +38,7 @@ export class Player extends AnimatedSprite {
       "idle",
       [idleImg as HTMLImageElement],
       1,
-      10
+      0.1
     );
 
     const run = new Animation(
@@ -51,7 +52,7 @@ export class Player extends AnimatedSprite {
         ),
       ] as HTMLImageElement[],
       2,
-      5,
+      0.08,
       true
     );
     const jump = new Animation(
@@ -69,7 +70,7 @@ export class Player extends AnimatedSprite {
         ),
       ] as HTMLImageElement[],
       2,
-      40,
+      0.9,
       false
     );
     return [idle, run, jump];
@@ -84,15 +85,17 @@ export class Player extends AnimatedSprite {
 
   private fallingHandler() {
     if (this.inBounds()) {
-      this.velocity.y += Settings.instance.GRAVITY;
+      this.velocity.y +=
+        Settings.instance.GRAVITY * Time.deltaTime * 100;
     } else {
       this.velocity.y = 0;
+      if (!this.canJump) this.play("idle");
       this.canJump = true;
     }
   }
 
   private jump() {
-    this.velocity.y = -this.jumpSpeed;
+    this.velocity.y -= this.jumpSpeed;
     this.play("jump");
     this.canJump = false;
   }
@@ -126,7 +129,7 @@ export class Player extends AnimatedSprite {
     // Create gravity
     this.fallingHandler();
 
-    this.pos.x += this.velocity.x;
-    this.pos.y += this.velocity.y;
+    this.pos.x += this.velocity.x * Time.deltaTime * 100;
+    this.pos.y += this.velocity.y * Time.deltaTime * 100;
   }
 }
