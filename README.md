@@ -1,16 +1,16 @@
-# super-mario-short
+# sad-html-cat
 
 Short game made with HTML5 canvas (Typescript)
 
-![img](https://i.imgur.com/rBORnzK.png)
+![img](https://i.imgur.com/qcMVfVq.png)
 
 ## How to play
-You can play the game from the netlify site: <a href="https://supermarioshort.netlify.app">here</a>
+You can play the game from the netlify site: <a href="https://sadhtmlcat.netlify.app">here</a>
 
 ## How to run the project
 1. Clone the repo 
 ```
-  git clone https://github.com/lorenzo774/super-mario-short
+  git clone https://github.com/lorenzo774/sad-html-cat
 ```
 2. Install all the dependencies
 ```
