@@ -51,7 +51,7 @@ export abstract class Sprite {
         this.pos.y
       );
       // scaleX by -1; this "trick" flips horizontally
-      ctx.scale(-this.img.width / 20, this.img.height / 26);
+      ctx.scale(-this.img.width / 32, this.img.height / 32);
 
       // draw the img
       // no need for x,y since we've already translated

@@ -7,10 +7,9 @@ import { Settings } from "../game/settings";
 import { Vector2 } from "../game/vector";
 import { loadImage } from "../utils/helper";
 import { Audio } from "../game/audio";
-import mario0 from "../../assets/sprites_mario000.png";
-import mario1 from "../../assets/sprites_mario001.png";
-import mario2 from "../../assets/sprites_mario002.png";
-import mario3 from "../../assets/sprites_mario003.png";
+import cat0 from "../../assets/cat0.png";
+import cat1 from "../../assets/cat1.png";
+import cat2 from "../../assets/cat2.png";
 
 export class Player extends AnimatedSprite {
   private speed: number = 6;
@@ -22,7 +21,7 @@ export class Player extends AnimatedSprite {
   public enabled: boolean = true;
 
   constructor() {
-    const playerSize: Vector2 = new Vector2(100, 130);
+    const playerSize: Vector2 = new Vector2(100, 100);
     const playerPos = new Vector2(
       Settings.instance.CANVAS_WIDTH / 2 - playerSize.x / 2,
       Settings.instance.TERRAIN_HEIGHT - playerSize.y
@@ -33,15 +32,15 @@ export class Player extends AnimatedSprite {
     this.animations = this.createAnimations();
     this.collider = new CollisionBox(
       70,
-      100,
-      new Vector2(24, 30)
+      70,
+      new Vector2(15, 30)
     );
     this.play("idle");
   }
 
   private createAnimations(): Animation[] {
     const idleImg = loadImage(
-      mario0,
+      cat0,
       this.playerSize.x,
       this.playerSize.y
     );
@@ -58,12 +57,17 @@ export class Player extends AnimatedSprite {
       [
         idleImg,
         loadImage(
-          mario1,
+          cat1,
+          this.playerSize.x,
+          this.playerSize.y
+        ),
+        loadImage(
+          cat2,
           this.playerSize.x,
           this.playerSize.y
         ),
       ] as HTMLImageElement[],
-      2,
+      3,
       0.08,
       true
     );
@@ -71,12 +75,12 @@ export class Player extends AnimatedSprite {
       "jump",
       [
         loadImage(
-          mario2,
+          cat0,
           this.playerSize.x,
           this.playerSize.y
         ),
         loadImage(
-          mario3,
+          cat1,
           this.playerSize.x,
           this.playerSize.y
         ),
