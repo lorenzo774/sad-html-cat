@@ -1,11 +1,16 @@
 import { CollisionBox } from "./collisionbox";
+import { Settings } from "./settings";
 import { Time } from "./time";
 import { Vector2 } from "./vector";
 
 export abstract class Sprite {
+  protected velocity: Vector2 = Vector2.ZERO;
+
   public flip: boolean = false;
   public collider: CollisionBox | null = null;
-  protected velocity: Vector2 = Vector2.ZERO;
+  public tag: string = "";
+  public gravity: number = 0;
+  public colliderTag: string = "";
 
   public isColliding: boolean = false;
   public isOnTerrain: boolean = false;
@@ -13,15 +18,29 @@ export abstract class Sprite {
   constructor(
     public img: HTMLImageElement,
     public pos: Vector2
-  ) {}
+  ) {
+    this.gravity = Settings.instance.GRAVITY;
+  }
+
+  private onTerrain(): boolean {
+    return (
+      this.pos.y + this.img.height + this.velocity.y >=
+      Settings.instance.TERRAIN_HEIGHT
+    );
+  }
 
   update() {}
 
-  protected updatePos() {
-    if (!this.isColliding) {
-      this.pos.x += this.velocity.x * Time.deltaTime * 100;
-      this.pos.y += this.velocity.y * Time.deltaTime * 100;
+  protected updatePos(func: () => void) {
+    if (this.isColliding || this.onTerrain()) {
+      this.velocity.y = 0;
+      func();
+    } else {
+      this.velocity.y +=
+        this.gravity * Time.deltaTime * 100;
     }
+    this.pos.x += this.velocity.x * Time.deltaTime * 100;
+    this.pos.y += this.velocity.y * Time.deltaTime * 100;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -96,35 +115,14 @@ export abstract class Sprite {
     );
   }
 
-  terrainCollision({ collider, pos }: Sprite): boolean {
-    if (!this.collider || !collider) return false;
-    this.isOnTerrain =
-      this.pos.y +
-        this.collider.offset.y +
-        this.velocity.y <
-        pos.y + collider.offset.y + collider.height &&
-      this.pos.x +
-        this.collider.offset.x +
-        this.collider.width +
-        this.velocity.x >
-        pos.x + collider.offset.x;
-
-    return this.isOnTerrain;
-  }
-
   collide(other: Sprite) {
     if (!this.collider || !other.collider) return;
 
-    if (
-      this.xCollision(other) &&
-      this.yCollision(other)
-      // this.collider.offset.y > other.offset.y &&
-      // this.collider.offset.y + this.collider.height <
-      //   other.offset.y + other.height
-    ) {
-      this.isColliding = true;
-    } else {
-      this.isColliding = false;
+    this.isColliding =
+      this.xCollision(other) && this.yCollision(other);
+
+    if (this.isColliding) {
+      this.colliderTag = other.tag;
     }
   }
 }

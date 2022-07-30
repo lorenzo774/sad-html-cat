@@ -7,14 +7,11 @@ export class Launcher {
   private then: number;
   private now: number = 0;
   private dif: number = 0;
-  private fpsCounter: HTMLElement | null;
 
-  constructor(private game: Game) {
+  constructor() {
     this.fixedDelta = Settings.instance.FPS;
     this.then = Date.now();
     this.now = Date.now();
-    this.fpsCounter =
-      document.querySelector("#fps-counter");
   }
 
   render() {
@@ -22,19 +19,15 @@ export class Launcher {
     this.now = Date.now();
     this.dif = this.now - this.then;
     Time.deltaTime = this.dif / 1000;
+    Time.time += Time.deltaTime;
 
     // Draw
-    this.game.update();
-    this.game.clear();
-    this.game.draw();
+    Game.instance.update();
+    Game.instance.clear();
+    Game.instance.draw();
     // Draw collisionbox on debug mode
-    if (Settings.instance.DEBUG_MODE) this.game.drawDebug();
-
-    const fps = 1 / (this.dif / 1000);
-
-    if (this.fpsCounter) {
-      this.fpsCounter.innerHTML = `FPS: ${fps.toFixed(0)}`;
-    }
+    if (Settings.instance.DEBUG_MODE)
+      Game.instance.drawDebug();
 
     this.then = this.now;
   }

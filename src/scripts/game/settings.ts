@@ -13,5 +13,7 @@ export class Settings {
   CANVAS_HEIGHT: number = 0;
   GRAVITY: number = 0.3;
   FPS: number = 144;
-  DEBUG_MODE: boolean = true;
+  DEBUG_MODE: boolean = false;
+  TERRAIN_HEIGHT: number = 637;
+  START_SPAWNER_DELAY: number = 600;
 }

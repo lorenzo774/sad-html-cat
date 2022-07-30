@@ -2,7 +2,7 @@ import { Game } from "./scripts/game/game";
 import { Input } from "./scripts/game/input";
 import { Launcher } from "./scripts/game/launcher";
 import { Settings } from "./scripts/game/settings";
-import { Player } from "./scripts/player/player";
+import { Audio } from "./scripts/game/audio";
 
 // HTML5 Canvas setup
 const canvas = document.querySelector(
@@ -17,15 +17,23 @@ context.imageSmoothingEnabled = false;
 Settings.instance.CANVAS_WIDTH = canvas.width;
 Settings.instance.CANVAS_HEIGHT = canvas.height;
 
-// GameObjects
-const player = new Player();
-const player2 = new Player(false);
-player2.pos.x += 300;
+Audio.run.playbackRate = 1.6;
 
 // Input system
 Input.listen();
 
-// Launch
-const game = new Game(context, [player, player2]);
-const launcher = new Launcher(game);
+// Load new game
+Game.newGame(context);
+
+let launcher = new Launcher();
 launcher.run();
+
+const tryAgainBtn = document.querySelector(
+  "#try-again"
+) as HTMLButtonElement;
+
+if (tryAgainBtn) {
+  tryAgainBtn.addEventListener("click", () => {
+    Game.newGame(context);
+  });
+}

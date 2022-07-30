@@ -11,7 +11,8 @@ interface AnimationData {
 export class AnimatedSprite extends Sprite {
   private maxFramesCounter: number = 0;
   private curFrameIndex: number = 0;
-  private curAnimationData: AnimationData | undefined;
+  public curAnimationData: AnimationData | undefined;
+  public curAnimation: Animation | undefined;
   private _animationsData: AnimationData[] = [];
   private _animations: Animation[] = [];
 
@@ -22,7 +23,13 @@ export class AnimatedSprite extends Sprite {
         return {
           timeLastFrame:
             animation.timeLastFrame * Time.deltaTime,
-          animation,
+          animation: new Animation(
+            animation.name,
+            animation.images,
+            animation.frames,
+            animation.timeLastFrame,
+            animation.loop
+          ),
         };
       }
     );
@@ -58,11 +65,11 @@ export class AnimatedSprite extends Sprite {
   }
 
   getAnimationData(
-    animation: Animation
+    name: string
   ): AnimationData | undefined {
     const animationData = this._animationsData.find(
       (animationData) =>
-        animationData.animation === animation
+        animationData.animation.name === name
     );
     if (!animationData) return undefined;
 
@@ -70,16 +77,15 @@ export class AnimatedSprite extends Sprite {
   }
 
   play(name: string, firstFrame: number = 0) {
-    const animation = this.getAnimation(name);
+    const animation = this.getAnimationData(name);
     if (animation === undefined) {
       this.curAnimationData = undefined;
       return;
     }
+    if (firstFrame >= animation.animation.frames) return;
 
-    if (firstFrame >= animation.frames) return;
-
-    this.curAnimationData =
-      this.getAnimationData(animation);
+    this.curAnimation = this.getAnimation(name);
+    this.curAnimationData = this.getAnimationData(name);
     this.setAnimatedSpriteData(firstFrame);
   }
 

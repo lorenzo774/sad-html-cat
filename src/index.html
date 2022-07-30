@@ -6,7 +6,12 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>Super mario</title>
+    <link
+      rel="shortcut icon"
+      href="./assets/star0.png"
+      type="image/png"
+    />
+    <title>Super Mario Short</title>
     <!-- CSS -->
     <link
       rel="preconnect"
@@ -25,9 +30,44 @@
     <script type="module" src="./main.ts" defer></script>
   </head>
   <body>
-    <div id="app">
-      <p id="fps-counter">FPS:</p>
-      <canvas id="game" width="1280" height="720"></canvas>
+    <!-- AUDIO -->
+    <audio id="jump">
+      <source
+        src="./assets/sounds/jump.wav"
+        type="audio/wav"
+      />
+    </audio>
+    <audio id="star">
+      <source
+        src="./assets/sounds/star.wav"
+        type="audio/wav"
+      />
+    </audio>
+    <audio loop id="run">
+      <source
+        src="./assets/sounds/run.wav"
+        type="audio/wav"
+      />
+    </audio>
+    <!-- GAME -->
+    <div class="center">
+      <div id="app">
+        <div class="ui hud">
+          <div class="points-conainter">
+            <img src="./assets/star0.png" alt="" />
+            <p id="points">:</p>
+          </div>
+        </div>
+        <div class="hide ui game-over-screen">
+          <p id="highscore">HIGH SCORE:</p>
+          <button id="try-again">Try again</button>
+        </div>
+        <canvas
+          id="game"
+          width="1280"
+          height="720"
+        ></canvas>
+      </div>
     </div>
   </body>
 </html>
