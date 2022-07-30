@@ -4,15 +4,12 @@ import { Settings } from "../game/settings";
 import { Sprite } from "../game/sprite";
 import { Vector2 } from "../game/vector";
 import { loadImage } from "../utils/helper";
+import goomba from "../../assets/goomba.png";
 
 export class Enemy extends Sprite {
   constructor() {
     super(
-      loadImage(
-        "../../assets/snake0.png",
-        60,
-        60
-      ) as HTMLImageElement,
+      loadImage(goomba, 60, 60) as HTMLImageElement,
       new Vector2(0, 0)
     );
     this.pos.y = -this.img.height;

@@ -1,6 +1,7 @@
 import { Sprite } from "../game/sprite";
 import { Vector2 } from "../game/vector";
 import { loadImage } from "../utils/helper";
+import bg from "../../assets/bg.png";
 
 export class Background extends Sprite {
   /**
@@ -8,11 +9,7 @@ export class Background extends Sprite {
    */
   constructor() {
     super(
-      loadImage(
-        "../../assets/bg.png",
-        1280,
-        720
-      ) as HTMLImageElement,
+      loadImage(bg, 1280, 720) as HTMLImageElement,
       Vector2.ZERO
     );
   }

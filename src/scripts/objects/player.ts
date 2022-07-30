@@ -7,6 +7,10 @@ import { Settings } from "../game/settings";
 import { Vector2 } from "../game/vector";
 import { loadImage } from "../utils/helper";
 import { Audio } from "../game/audio";
+import mario0 from "../../assets/sprites_mario000.png";
+import mario1 from "../../assets/sprites_mario001.png";
+import mario2 from "../../assets/sprites_mario002.png";
+import mario3 from "../../assets/sprites_mario003.png";
 
 export class Player extends AnimatedSprite {
   private speed: number = 6;
@@ -37,7 +41,7 @@ export class Player extends AnimatedSprite {
 
   private createAnimations(): Animation[] {
     const idleImg = loadImage(
-      "../../assets/sprites_mario000.png",
+      mario0,
       this.playerSize.x,
       this.playerSize.y
     );
@@ -54,7 +58,7 @@ export class Player extends AnimatedSprite {
       [
         idleImg,
         loadImage(
-          "../../assets/sprites_mario001.png",
+          mario1,
           this.playerSize.x,
           this.playerSize.y
         ),
@@ -67,12 +71,12 @@ export class Player extends AnimatedSprite {
       "jump",
       [
         loadImage(
-          "../../assets/sprites_mario002.png",
+          mario2,
           this.playerSize.x,
           this.playerSize.y
         ),
         loadImage(
-          "../../assets/sprites_mario003.png",
+          mario3,
           this.playerSize.x,
           this.playerSize.y
         ),
